@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 from itertools import cycle
@@ -26,7 +26,7 @@ GAME_DRAW_MESSAGE = 'Draw !!\n'
 """
 def getInitializedBoard(rowCount=ROW_COUNT, columnCount=COLUMN_COUNT):
     board = []
-    for i in xrange(columnCount):
+    for i in range(columnCount):
         column = [None] * rowCount
         board.append(column)
     return board
@@ -39,16 +39,16 @@ prints out the board positions
 """
 def displayBoard(board):
     os.system('clear')
-    for row in xrange(ROW_COUNT):
-        print ''
+    for row in range(ROW_COUNT):
+        print('')
         for col in board:
             discValue = col[row]
             if discValue is None:
                 disc = UNUSED_DISC_SLOT
             else:
                 disc = PLAYER_1_DISC_COLOR if discValue == 1 else PLAYER_2_DISC_COLOR
-            print '[ %s ]' % disc,
-    print '\n'
+            print('[ %s ]' % disc, end='')
+    print('\n')
 
 
 """
@@ -61,11 +61,11 @@ alongside the main 'player move question' if needed
 """
 def getPlayerMove(player, additionalMessageForPlayer = ''):
     if additionalMessageForPlayer:
-        print '\n' + additionalMessageForPlayer
+        print('\n' + additionalMessageForPlayer)
 
-    rawInput = raw_input(PLAYER_MOVE_QUESTION % (COLUMN_COUNT, player))
+    playerInput = input(PLAYER_MOVE_QUESTION % (COLUMN_COUNT, player))
     try:
-        playerChosenColumn = int(rawInput)
+        playerChosenColumn = int(playerInput)
     except ValueError:
         playerChosenColumn = -1
 
@@ -86,7 +86,7 @@ def updateBoard(board, player, playerChosenColumn):
     chosenColumnIndex = playerChosenColumn - 1
     targetColumn = board[chosenColumnIndex]
 
-    usedSlotsInColumn = len(filter(None, targetColumn))
+    usedSlotsInColumn = sum(slot is not None for slot in targetColumn)
 
     if usedSlotsInColumn == ROW_COUNT:
         return False, None
@@ -220,7 +220,7 @@ def main():
     playerIterator = cycle(range(1,3))
 
     while playGame:
-        player = playerIterator.next()
+        player = next(playerIterator)
         playerChosenColumn = getPlayerMove(player, additionalMessageForPlayer)
         additionalMessageForPlayer = ''
 
@@ -228,7 +228,7 @@ def main():
 
         if not didUpdateBoard:
             additionalMessageForPlayer = BAD_CHOICE_MESSAGE
-            playerIterator.next()
+            next(playerIterator)
             continue
 
         discsPlayed += 1
@@ -237,13 +237,13 @@ def main():
         winningPlayer = checkGameWinStatus(board, lastSlotFilledCoords)
 
         if winningPlayer:
-            print PLAYER_WON_MESSAGE % (PLAYER_1_DISC_COLOR if winningPlayer == 1 
-                                                            else PLAYER_2_DISC_COLOR)
+            print(PLAYER_WON_MESSAGE % (PLAYER_1_DISC_COLOR if winningPlayer == 1
+                                                            else PLAYER_2_DISC_COLOR))
             playGame = False
             continue
 
         if discsPlayed == ROW_COUNT * COLUMN_COUNT:
-            print GAME_DRAW_MESSAGE
+            print(GAME_DRAW_MESSAGE)
             playGame = False
             continue
 

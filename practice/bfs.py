@@ -2,16 +2,6 @@
 
 from Queue import Queue
 
-# sample graph implemented as a dictionary
-graph = {'A': ['B', 'C', 'E'],
-         'B': ['A', 'D', 'E'],
-         'C': ['A', 'F', 'G'],
-         'D': ['B'],
-         'E': ['A', 'B', 'D'],
-         'F': ['C'],
-         'G': ['C']}
-
-
 # visits all the nodes of a graph (connected component) using BFS
 def bfsConnectedComponent(graph, start):
     # keep track of nodes to be processed
@@ -37,19 +27,32 @@ def bfsConnectedComponent(graph, start):
 
     return levels, visited
 
-levels, visited = bfsConnectedComponent(graph,'A') # ['A', 'B', 'C', 'E', 'D', 'F', 'G']
+if __name__ == '__main__':
 
-print('graph as dict = %s' % graph)
-print('')
-print('visited %s' % visited)
-print('')
-formatPrintingByLevel = 0
-for k, v in levels.items():
-    if v != formatPrintingByLevel:
-        formatPrintingByLevel = v
-        print('')
-    print('%s: %s' % (k, v))
-print('')
-print('B is at level %s' % levels['B'])
-print('G is at level %s' % levels['G'])
+    # sample graph implemented as a dictionary
+    graph = {
+            'A': ['B', 'C', 'E'],
+            'B': ['A', 'D', 'E'],
+            'C': ['A', 'F', 'G'],
+            'D': ['B'],
+            'E': ['A', 'B', 'D'],
+            'F': ['C'],
+            'G': ['C']
+            }
+
+    levels, visited = bfsConnectedComponent(graph,'A') # ['A', 'B', 'C', 'E', 'D', 'F', 'G']
+
+    print('graph as dict = %s' % graph)
+    print('')
+    print('visited %s' % visited)
+    print('')
+    formatPrintingByLevel = 0
+    for k, v in levels.items():
+        if v != formatPrintingByLevel:
+            formatPrintingByLevel = v
+            print('')
+        print('%s: %s' % (k, v))
+    print('')
+    print('B is at level %s' % levels['B'])
+    print('G is at level %s' % levels['G'])
 

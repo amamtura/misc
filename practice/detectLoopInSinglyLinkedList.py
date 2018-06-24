@@ -20,7 +20,7 @@ x5.next = x1 # Loop !
 def detectLoop(slowPtr):
 
     if slowPtr is None:
-        return 'no linked list was passed into function'
+        raise ValueError('No linked list was passed into function')
 
     result = 'no loop found'
 

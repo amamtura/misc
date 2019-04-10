@@ -66,5 +66,14 @@ Always open to suggestions to improve code and most definitely fix issues/bugs.
 API endpoints test. Also, example features I would add is "pagination", "confirm on delete action". Also, I don't have experience with front-end
 frameworks but it looks like Axios or Fetch API might be a better choice than "vue-resource"'s http functionality.
 
-6. The app features include: API for persons "list", create, read (one record), update, delete; Django's admin webapp "out-of-the-box",
+6.  The app features include: API for persons "list", create, read (one record), update, delete; Django's admin webapp "out-of-the-box",
 DRF's API dev/test webapp, CRUD webapp using Vue.js and BootStrap 4.x
+
+7.  API url examples:
+-   GET /api/persons/              (list all persons)
+-   GET /api/persons/?order_by=id  (list all, sorted)
+-   GET /api/persons/4             (get person)
+-   POST /api/persons/             (create person)
+-   PUT /api/persons/2             (update person)
+-   DELETE /api/persons/5          (delete person)
+

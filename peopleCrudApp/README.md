@@ -11,7 +11,15 @@ Misc notes:
 Installation
 ------------
 -   download source code
--   cd (to where requirements.txt is)
+``` {.sourceCode .bash}
+$ git clone https://github.com/amamtura/misc.git
+```
+
+-   change directory to peopleCrudApp (to where requirements.txt is)
+``` {.sourceCode .bash}
+$ cd misc/peopleCrudApp
+```
+
 -   create and activate virtualenv; https://packaging.python.org/guides/installing-using-pip-and-virtualenv/
 ``` {.sourceCode .bash}
 $ python3 -m virtualenv penv
@@ -31,11 +39,11 @@ $ python manage.py migrate
 
 -   for a dev instance, can create a django super user, example username=admin, password=admin
 ``` {.sourceCode .bash}
-python manage.py createsuperuser
+$ python manage.py createsuperuser
 ```
 -   start the dev/local server
 ``` {.sourceCode .bash}
-python manage.py runserver
+$ python manage.py runserver
 ```
 
 -   also from within django admin webapp (http://localhost:8000/admin/), can create another non-admin user if desired, example username=appuser, password=test2019

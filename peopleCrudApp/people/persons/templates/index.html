@@ -1,0 +1,333 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PeopleApp w/ vue.js & django</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "persons/css/common.css" %}">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+  </head>
+
+  <body class="text-white bg-dark">
+
+    <div id="app">
+
+      <div class="container">
+
+        <div class="row">
+          <img class="mx-auto scale-25-pct pad-top-10" src="{% static "persons/images/disney-tva.jpg" %}">
+        </div>
+
+        <div class="row">
+
+          <h1>Persons List
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPersonModal">Add Person</button>
+          </h1>
+
+          <table class="table sortable">
+
+            <thead>
+              <tr>
+                <th scope="col"><button class="btn btn-link" v-on:click="getPersonsOrderBy('id')" title="sort by Id">Id</button></th>
+                <th scope="col"><button class="btn btn-link" v-on:click="getPersonsOrderBy('email')" title="sort by Email">Email</button></th>
+                <th scope="col"><button class="btn btn-link" v-on:click="getPersonsOrderBy('name')" title="sort by Name">Name</button></th>
+                <th scope="col"><button class="btn btn-link" v-on:click="getPersonsOrderBy('birthday')" title="sort by Birthday">Birthday</button></th>
+                <th scope="col"><button class="btn btn-link" v-on:click="getPersonsOrderBy('zipcode')" title="sort by Zipcode">Zipcode</button></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="person in persons">
+                <td scope="row">${ person.id }$</td>
+                <td>${ person.email }$ </td>
+                <td>${ person.name }$</td>
+                <td>${ person.birthday }$</td>
+                <td>${ person.zipcode }$</td>
+                <td>
+                  <button class="btn btn-info" v-on:click="getPerson(person.id)">Edit</button>
+                  <button class="btn btn-danger" v-on:click="deletePerson(person.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Add Person Modal -->
+          <div class="modal fade" id="createPersonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title text-dark" id="exampleModalLongTitle">Add Person</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form v-on:submit.prevent="createPerson()">
+                <div class="modal-body">
+                    <div>
+                        <span class="text-danger">${ addEditPersonUserMessages }$</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        maxlength="100"
+                        placeholder="Email"
+                        v-model="newPerson.email"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="name">Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        maxlength="255"
+                        placeholder="Name"
+                        v-model="newPerson.name"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="birthday">Birthday</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="birthday"
+                        placeholder="Birthday"
+                        v-model="newPerson.birthday"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="zipcode">Zipcode</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="zipcode"
+                        maxlength="10"
+                        placeholder="Zipcode"
+                        v-model="newPerson.zipcode"
+                        required="required" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                </form>
+              </div>
+            </div>
+           <div class="loading" v-if="loading===true">Loading&#8230;</div>          
+          </div>
+          <!-- End Add Person Modal -->          
+
+          <!-- Edit Person Modal -->
+          <div class="modal fade" id="editPersonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title text-dark" id="exampleModalLongTitle">Edit Person</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form v-on:submit.prevent="updatePerson()">
+                <div class="modal-body">
+                    <div>
+                        <span class="text-danger">${ addEditPersonUserMessages }$</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        maxlength="100"
+                        placeholder="Email"
+                        v-model="currentPerson.email"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="name">Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        maxlength="255"
+                        placeholder="Name"
+                        v-model="currentPerson.name"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="birthday">Birthday</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="birthday"
+                        placeholder="Birthday"
+                        v-model="currentPerson.birthday"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="zipcode">Zipcode</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="zipcode"
+                        maxlength="10"
+                        placeholder="Zipcode"
+                        v-model="currentPerson.zipcode"
+                        required="required" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                </form>
+              </div>
+            </div>
+           <div class="loading" v-if="loading===true">Loading&#8230;</div>          
+          </div>
+          <!-- End Edit Person Modal --> 
+
+        </div>  <!-- row -->
+      </div>  <!-- container -->
+
+      <div class="loading" v-if="loading===true">Loading&#8230;</div>
+
+    </div>
+
+    <script>
+      var vm = new Vue({
+        delimiters: ['${', '}$'],
+        el: '#app',
+        data: {
+          persons: [],
+          loading: false,
+          currentPerson: {},
+          currentOrderBy: null,
+          newPerson: { 'email': null, 'name': null, 'birthday': null, 'zipcode': null },
+          addEditPersonUserMessages: null,
+        },
+        http: {
+          root: 'http://localhost:8000',
+//                    headers: {
+//                        Authorization: 'Basic YXBpOnBhc3N3b3Jk'
+//                    }
+        },
+        methods: {
+          getPersonsOrderBy: function(orderBy) {
+                               if (orderBy == this.currentOrderBy) {
+                                 this.currentOrderBy = `-${orderBy}`;
+                               } else {
+                                 this.currentOrderBy = orderBy;
+                               }
+                               this.getPersons();
+                             },
+          getPersons: function () {
+                        this.loading = true;
+                        this.$http
+                            .get(`api/persons?order_by=${this.currentOrderBy}`)
+                            .then((response) => {
+                              if (response.status == 200) {
+                                this.persons = response.body;
+                                this.loading = false;
+                              }
+                            })
+                            .catch((err) => {
+                              this.loading = false;
+                              console.log(err);
+                            })
+                      },
+          createPerson: function() {
+                          this.loading = true;
+                          this.$http
+                              .post('/api/persons/', this.newPerson)
+                              .then((response) => {
+                                this.loading = false;
+                                if (response.status == 201) {
+                                  $("#createPersonModal").modal('hide');
+                                  this.newPerson = { 'email': null, 'name': null, 'birthday': null, 'zipcode': null };
+                                  this.getPersons();
+                                }
+                              })
+                              .catch((err) => {
+                                this.loading = false;
+                                console.log(err);
+                              })
+                        },
+          getPerson: function(id) {
+                       this.loading = true;
+                       this.$http
+                           .get(`/api/persons/${id}`)
+                           .then((response) => {
+                             if (response.status == 200) {
+                               this.currentPerson = response.data;
+                               $("#editPersonModal").modal('show');
+                               this.loading = false;
+                             }
+                           })
+                          .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                          })
+                     },
+          updatePerson: function() {
+                          this.loading = true;
+                          this.$http
+                              .put(`/api/persons/${this.currentPerson.id}`, this.currentPerson)
+                              .then((response) => {
+                                this.loading = false;
+                                if (response.status == 200) {
+                                  this.currentPerson = response.data;
+                                  $("#editPersonModal").modal('hide');
+                                  this.getPersons();
+                                }
+                              })
+                             .catch((err) => {
+                               this.loading = false;
+                               console.log(err);
+                             })
+                        },
+          deletePerson: function(id) {
+                          this.loading = true;
+                          this.$http
+                              .delete(`/api/persons/${id}`)
+                              .then((response) => {
+                                if (response.status == 204) {
+                                  this.loading = false;
+                                  this.getPersons();
+                                }
+                              })
+                             .catch((err) => {
+                               this.loading = false;
+                               console.log(err);
+                             })
+                        }
+        },
+        mounted: function () {
+                   this.getPersonsOrderBy('id');
+                 }
+      })
+    </script>
+
+  </body>
+</html>
+

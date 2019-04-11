@@ -52,6 +52,13 @@ $ python manage.py runserver
 
 -   finally the "People App" for CRUD is available at http://localhost:8000/persons/
 
+Running Tests
+-------------
+-   change directory to where manage.py is
+``` {.sourceCode .bash}
+$ python manage.py test
+```
+
 App and Dev notes
 -----------------
 1.  Django provides a nice, ready to use admin webapp, which via theme-ing etc could even be used as a full fledged user facing webapp

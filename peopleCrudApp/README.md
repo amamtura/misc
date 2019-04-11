@@ -62,7 +62,7 @@ $ python manage.py test
 App and Dev notes
 -----------------
 1.  Django provides a nice, ready to use admin webapp, which via theme-ing etc could even be used as a full fledged user facing webapp
-(esp for internal facing business solutions). Django's web framework features allow for rapid development of lots of functionality wih
+(esp for internal facing business solutions). Django's web framework features allow for rapid development of lots of functionality with
 minimal coding effort.
 
 2.  Since the task called for the front-end and back-end to interact via an API, I choose Django Rest Framework. Additionally, I needed
@@ -71,18 +71,17 @@ so please excuse any potential non-optimal code or mistakes. I know I need to sp
 apply various associated concepts of "Data driven view", "Components", binding, validation interaction between server/client etc
 
 3.  I used various blogs/tutorials, official documentation, stack overflow threads, general searches on the web to bring all the 3 main parts
-of the app (Django backend, DRF API and Vue.js frontend) up to the current state where all the basics are working.
+of the app (Django backend, DRF API and Vue.js frontend) up to the current state where all the primary functionality is working.
 
 4.  I am aware that currently certain bugs exist in the code, there could be some usability issues/improvements and pieces of code could be re-factored
 for better design possibly (e.g. DRY). No software is ever "finished" so at this point I am submitting the app in a working state.
 Always open to suggestions to improve code and most definitely fix issues/bugs.
 
-5.  Among other things, for any project I would most definitely want to spend some time to add unit tests and for a case like this at least
-API endpoints test. Example features I would add are "pagination", "confirm on delete action". Also, I don't have experience with front-end
-frameworks but it looks like Axios or Fetch API might be a better choice than "vue-resource"'s http functionality.
+5.  Some more example features I would add are "pagination", "confirm on delete action" etc. Looks like Axios or Fetch API might be a better
+choice than "vue-resource"'s http functionality.
 
 6.  The app features include: API for persons "list", create, read (one record), update, delete; Django's admin webapp "out-of-the-box",
-DRF's API dev/test webapp, CRUD webapp using Vue.js and BootStrap 4.x
+DRF's API dev/test webapp, CRUD webapp using Vue.js and BootStrap 4.x, unit-tests suite.
 
 7.  API url examples:
 -   GET /api/persons/              (list all persons)

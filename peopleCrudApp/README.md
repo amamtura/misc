@@ -71,7 +71,7 @@ for better design possibly (e.g. DRY). No software is ever "finished" so at this
 Always open to suggestions to improve code and most definitely fix issues/bugs.
 
 5.  Among other things, for any project I would most definitely want to spend some time to add unit tests and for a case like this at least
-API endpoints test. Also, example features I would add is "pagination", "confirm on delete action". Also, I don't have experience with front-end
+API endpoints test. Example features I would add are "pagination", "confirm on delete action". Also, I don't have experience with front-end
 frameworks but it looks like Axios or Fetch API might be a better choice than "vue-resource"'s http functionality.
 
 6.  The app features include: API for persons "list", create, read (one record), update, delete; Django's admin webapp "out-of-the-box",

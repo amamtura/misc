@@ -84,10 +84,10 @@ choice than "vue-resource"'s http functionality.
 DRF's API dev/test webapp, CRUD webapp using Vue.js and BootStrap 4.x, unit-tests suite.
 
 7.  API url examples:
--   GET /api/persons/              (list all persons)
--   GET /api/persons/?order_by=id  (list all, sorted)
--   GET /api/persons/4             (get person)
--   POST /api/persons/             (create person)
--   PUT /api/persons/2             (update person)
--   DELETE /api/persons/5          (delete person)
+-   GET /api/persons/                (list all persons, default sort on person.id (i.e. pk))
+-   GET /api/persons/?order_by=name  (list all, sorted by name; order_by supports id, email, name, birthday and zipcode)
+-   GET /api/persons/4               (get person)
+-   POST /api/persons/               (create person)
+-   PUT /api/persons/2               (update person)
+-   DELETE /api/persons/5            (delete person)
 

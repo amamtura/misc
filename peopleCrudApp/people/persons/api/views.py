@@ -8,7 +8,6 @@ from .serializers import PersonSerializer
 
 
 class PersonList(ListModelMixin, CreateModelMixin, GenericAPIView):
-    #queryset = Person.objects.all()
     serializer_class = PersonSerializer
 
     def get_queryset(self):
